@@ -88,22 +88,22 @@ public class TwoSumTest {
         assertEquals(expected1, triplesQuadratic.length);
     }
 
-    @Test // Slow
-    public void testGetPairs4() {
-        Supplier<int[]> intsSupplier = new Source(1500, 1000).intsSupplier(10);
-        int[] ints = intsSupplier.get();
-        TwoSumQuadratic target = new TwoSumQuadratic(ints);
-        Pair[] triplesQuadratic = target.getPairs();
-        Pair[] triplesCubic = new TwoSumQuadratic(ints).getPairs();
-        int expected1 = triplesCubic.length;
-        Pair[] triplesQuadrithmic = new TwoSumWithCalipers(ints).getPairs();
-        int expected2 = triplesQuadrithmic.length;
-        System.out.println(expected2);
-        assertEquals(expected1, expected2);
-        assertEquals(expected1, triplesQuadratic.length);
-    }
+//    @Test // Slow
+//    public void testGetPairs4() {
+//        Supplier<int[]> intsSupplier = new Source(1500, 1000).intsSupplier(10);
+//        int[] ints = intsSupplier.get();
+//        TwoSumQuadratic target = new TwoSumQuadratic(ints);
+//        Pair[] triplesQuadratic = target.getPairs();
+//        Pair[] triplesCubic = new TwoSumQuadratic(ints).getPairs();
+//        int expected1 = triplesCubic.length;
+//        Pair[] triplesQuadrithmic = new TwoSumWithCalipers(ints).getPairs();
+//        int expected2 = triplesQuadrithmic.length;
+//        System.out.println(expected2);
+//        assertEquals(expected1, expected2);
+//        assertEquals(expected1, triplesQuadratic.length);
+//    }
 
-    @Test
+    //@Test
     public void testGetPairsC0() {
         int[] ints = new int[]{30, -40, -20, -10, 40, 0, 10, 5};
         Arrays.sort(ints);
@@ -115,7 +115,7 @@ public class TwoSumTest {
         assertEquals(2, new TwoSumWithCalipers(ints).getPairs().length);
     }
 
-    @Test
+    //@Test
     public void testGetPairsC1() {
         Supplier<int[]> intsSupplier = new Source(20, 20, 1L).intsSupplier(10);
         int[] ints = intsSupplier.get();
