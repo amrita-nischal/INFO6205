@@ -1,7 +1,11 @@
 package edu.neu.coe.info6205.sort.elementary;
 
 import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.InstrumentedHelper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
+import edu.neu.coe.info6205.util.Benchmark;
+import edu.neu.coe.info6205.util.Benchmark_Timer;
+import edu.neu.coe.info6205.util.Config;
 
 public class HeapSort<X extends Comparable<X>> extends SortWithHelper<X> {
 
@@ -39,6 +43,34 @@ public class HeapSort<X extends Comparable<X>> extends SortWithHelper<X> {
         if (index != largest) {
             helper.swap(array, index, largest);
             maxHeap(array, heapSize, largest);
+        }
+    }
+    public static void main(String[] args) {
+        int N = 10000;
+
+        while (N <= 256000) {
+            InstrumentedHelper<Integer> instrumentedHelper = new InstrumentedHelper<>("HeapSort", Config.setupConfig("true", "0", "1", "", ""));
+            HeapSort<Integer> s = new HeapSort<>(instrumentedHelper);
+            int j = N;
+            s.init(j);
+            Integer[] temp = instrumentedHelper.random(Integer.class, r -> r.nextInt(j));
+            Benchmark<Boolean> benchmark = new Benchmark_Timer<>("Sorting", b -> s.sort(temp, 0, j));
+            double nTime = benchmark.run(true, 20);
+            s.sort(temp, 0, j);
+
+            long nCompares = instrumentedHelper.getCompares();
+            int nSwaps = instrumentedHelper.getSwaps();
+            long nHits = instrumentedHelper.getHits();
+
+            System.out.println("When array size is: " + j);
+            System.out.println("Compares: " + nCompares);
+            System.out.println("Swaps: " + nSwaps);
+            System.out.println("Hits: " + nHits);
+            System.out.println("Time: " + nTime);
+
+            System.out.println("\nFor references:\t" + j + "\t" + nCompares + "\t" + nSwaps + "\t" + nHits + "\t" + nTime + "\n");
+
+            N = N * 2;
         }
     }
 }

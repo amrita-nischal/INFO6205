@@ -1,6 +1,9 @@
 package edu.neu.coe.info6205.sort.linearithmic;
 
 import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.InstrumentedHelper;
+import edu.neu.coe.info6205.util.Benchmark;
+import edu.neu.coe.info6205.util.Benchmark_Timer;
 import edu.neu.coe.info6205.util.Config;
 
 import java.util.ArrayList;
@@ -104,5 +107,48 @@ public class QuickSort_DualPivot<X extends Comparable<X>> extends QuickSort<X> {
         }
 
         private final Helper<X> helper;
+    }
+    public static void main (String[] args) {
+        int N = 10000;
+
+        while(N<=256000) {
+
+            InstrumentedHelper<Integer> instrumentedHelper = new InstrumentedHelper<>("QuickSort_DualPivot", Config.setupConfig("true", "0", "0", "", ""));
+            QuickSort_DualPivot<Integer> s = new QuickSort_DualPivot<>(instrumentedHelper);
+
+            int j = N;
+            s.init(j);
+
+            Integer[] temp = instrumentedHelper.random(Integer.class, r -> r.nextInt(j));
+
+            Partitioner<Integer> partitioner = s.createPartitioner();
+            List<Partition<Integer>> partitionList = partitioner.partition(new Partition<>(temp, 0, temp.length));
+            Partition<Integer> p1 = partitionList.get(0);
+            Partition<Integer> p2 = partitionList.get(1);
+            Partition<Integer> p3 = partitionList.get(2);
+
+            Benchmark<Boolean> benchmark1 = new Benchmark_Timer<>("Sorting", b -> s.sort(temp, 0, p1.to, 0));
+            double b1 = benchmark1.run(true, 20);
+            Benchmark<Boolean> benchmark2 = new Benchmark_Timer<>("Sorting", b -> s.sort(temp, p2.from, p2.to, 0));
+            double b2 = benchmark2.run(true, 20);
+            Benchmark<Boolean> benchmark3 = new Benchmark_Timer<>("Sorting", b -> s.sort(temp, p3.from, j, 0));
+            double b3 = benchmark3.run(true, 20);
+
+            long nCompares = instrumentedHelper.getCompares();
+            int nSwaps = instrumentedHelper.getSwaps();
+            long nHits = instrumentedHelper.getHits();
+
+            double nTime = (b1 + b2 + b3);
+
+            System.out.println("When array size is: " + j);
+            System.out.println("Compares: " + nCompares);
+            System.out.println("Swaps: " + nSwaps );
+            System.out.println("Hits: " + nHits);
+            System.out.println("Time: " + nTime);
+
+            System.out.println("\nFor references:\t" + j + "\t" + nCompares + "\t" + nSwaps + "\t" + nHits + "\t" + nTime + "\n");
+
+            N *= 2;
+        }
     }
 }

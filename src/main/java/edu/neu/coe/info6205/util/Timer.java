@@ -61,24 +61,32 @@ public class Timer {
      */
     public <T, U> double repeat(int n, boolean warmup, Supplier<T> supplier, Function<T, U> function, UnaryOperator<T> preFunction, Consumer<U> postFunction) {
         // TO BE IMPLEMENTED : note that the timer is running when this method is called and should still be running when it returns.
-        logger.trace("=>" + n + "runs");
-        for( int i = 0; i < n; i++){
-            T m = supplier.get();
-            if(preFunction != null){
-                pause();
-                m = preFunction.apply(supplier.get());
-                resume();
+        long total = 0;
+
+        for (int i = 0; i < n; i++) {
+            T input = supplier.get();
+
+            if (preFunction != null) {
+                input = preFunction.apply(input);
             }
-            U k = function.apply(m);
-            if(postFunction != null) {
-                pause();
-                postFunction.accept(k);
-                resume();
+
+            long start = getClock();
+
+            U result = function.apply(input);
+
+            long end = getClock();
+            total += end - start;
+
+            if (postFunction != null) {
+                postFunction.accept(result);
             }
-            lap();
+
+            if (!warmup) {
+                lap();
+            }
         }
-        pause();
-        return meanLapTime();
+
+        return warmup ? 0 : toMillisecs(total/n);
         // END SOLUTION
     }
 
@@ -204,7 +212,11 @@ public class Timer {
      * @return the number of ticks for the system clock. Currently defined as nano time.
      */
     private static long getClock() {
-         return System.nanoTime();
+        // TO BE IMPLEMENTED 
+
+        // SKELETON
+        return System.nanoTime();
+        // END SOLUTION
     }
 
     /**
@@ -215,7 +227,11 @@ public class Timer {
      * @return the corresponding number of milliseconds.
      */
     private static double toMillisecs(long ticks) {
-        return ticks*Math.pow(10, -6);
+        // TO BE IMPLEMENTED 
+
+        // SKELETON
+        return ticks / 1000000.0;
+        // END SOLUTION
     }
 
     final static LazyLogger logger = new LazyLogger(Timer.class);

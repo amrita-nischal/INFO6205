@@ -1,8 +1,8 @@
 package edu.neu.coe.info6205.threesum;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import edu.neu.coe.info6205.util.Stopwatch;
+
+import java.util.*;
 import java.util.function.Function;
 
 /**
@@ -47,28 +47,83 @@ public class ThreeSumQuadraticWithCalipers implements ThreeSum {
      * @return a List of Triples.
      */
     public static List<Triple> calipers(int[] a, int i, Function<Triple, Integer> function) {
-
         List<Triple> triples = new ArrayList<>();
+        // TO BE IMPLEMENTED  : use function to qualify triples and to navigate otherwise.
 
-        int j = i + 1;
-        int k = a.length - 1;
+        int n = a.length;
+        int left = i+1, right = n-1;
 
-        while (j < k) {
-            Triple t = new Triple(a[i], a[j], a[k]);
-            if (function.apply(t) == 0) {
-                triples.add(t);
-                k--;
-                j++;
-            } else if (function.apply(t) < 0) {
-                j++;
-            } else {
-                k--;
-            }
+        while(left<right){
+            Triple triple = new Triple(a[i],a[left],a[right]);
+            int sum = function.apply(triple);
+
+            if(sum ==0){
+                triples.add(triple); left++; right--;}
+            else if(sum < 0)
+                left++;
+            else if(sum>0)
+                right--;
 
         }
 
         return triples;
     }
+
+    public static int[] createArray(int N) {
+        if (N <= 0) {
+            throw new IllegalArgumentException("Array size must be greater than zero.");
+        }
+
+        int[] randomArray = new int[N];
+        Random random = new Random();
+
+        for (int i = 0; i < N; i++) {
+            // Generating random integers (you can adjust the range as needed)
+            randomArray[i] = random.nextInt(21) - 10; // Generates random integers between -100 and 100
+        }
+
+        return randomArray;
+    }
+    public static void main(String args[]){
+
+        int[] array800 = createArray(800);
+        int[] array1600 = createArray(1600);
+        int[] array3200 = createArray(3200);
+        int[] array6400 = createArray(6400);
+        int[] array12800 = createArray(12800);
+
+        List<int[]> N = new ArrayList<>();
+
+        N.add(array800);
+        N.add(array1600);
+        N.add(array3200);
+        N.add(array6400);
+        N.add(array12800);
+
+
+
+        Triple[] triples = null;
+        for(int i=0;i<N.size();i++) {
+            ThreeSumQuadraticWithCalipers t = new ThreeSumQuadraticWithCalipers(N.get(i));
+
+            Stopwatch watch = new Stopwatch();
+
+            try {
+                triples = t.getTriples();
+                System.out.println(" for N="+ N.get(i).length+", Time: " + watch.lap() + " milliseconds for ThreeSumQuadraticWithCalipers");
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                watch.close();
+            }
+            Arrays.stream(triples)
+                    .forEach(triple -> System.out.println("x: " + triple.x + ", y: " + triple.y + ", z: " + triple.z));
+
+        }
+
+
+    }
+
 
     private final int[] a;
     private final int length;

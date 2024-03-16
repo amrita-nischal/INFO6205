@@ -433,7 +433,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
     public static final String INSTRUMENTING = "instrumenting";
     public static final String SHOW_STATS = "showStats";
 
-    public int getCompares() {
+    public long getCompares() {
         return compares;
     }
 
@@ -499,7 +499,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
 
     // NOTE: the following private methods are only for testing (using reflection).
 
-    private int getHits() {
+    public long getHits() {
         return hits;
     }
 
@@ -525,11 +525,11 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
     private final boolean countHits;
     private final boolean showStats;
     private StatPack statPack;
-    private int compares = 0;
+    private long compares = 0;
     private int swaps = 0;
     private int copies = 0;
     private int fixes = 0;
-    private int hits = 0;
+    private long hits = 0;
     private int countInversions;
     private int maxDepth = 0;
 }

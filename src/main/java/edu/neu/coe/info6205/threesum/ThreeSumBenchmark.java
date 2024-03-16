@@ -1,7 +1,6 @@
 package edu.neu.coe.info6205.threesum;
 
 import edu.neu.coe.info6205.util.Benchmark_Timer;
-import edu.neu.coe.info6205.util.Stopwatch;
 import edu.neu.coe.info6205.util.TimeLogger;
 import edu.neu.coe.info6205.util.Utilities;
 
@@ -35,22 +34,16 @@ public class ThreeSumBenchmark {
 
     private void benchmarkThreeSum(final String description, final Consumer<int[]> function, int n, final TimeLogger[] timeLoggers) {
         if (description.equals("ThreeSumCubic") && n > 4000) return;
-        double t = 0;
-        for(int i = 0; i < this.runs; i++){
-            int[] temp = this.supplier.get();
-            Stopwatch sW = new Stopwatch();
-            function.accept(temp);
-            long t1 = sW.lap();
-            t += t1;
-            sW.close();
-        }
+        // TO BE IMPLEMENTED 
 
-        System.out.println(description + ":");
-        System.out.println();
-        timeLoggers[0].log(t / this.runs, n);
-        timeLoggers[1].log(t / this.runs, n);
-        System.out.println();
 
+
+
+
+
+
+
+throw new RuntimeException("implementation missing");
     }
 
     private final static TimeLogger[] timeLoggersCubic = {
