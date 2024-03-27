@@ -58,7 +58,7 @@ public class HeapSort<X extends Comparable<X>> extends SortWithHelper<X> {
             s.sort(temp, 0, j);
 
             long nCompares = instrumentedHelper.getCompares();
-            int nSwaps = instrumentedHelper.getSwaps();
+            long nSwaps = instrumentedHelper.getSwaps();
             long nHits = instrumentedHelper.getHits();
 
             System.out.println("When array size is: " + j);

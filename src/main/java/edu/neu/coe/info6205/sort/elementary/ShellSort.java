@@ -5,9 +5,8 @@ package edu.neu.coe.info6205.sort.elementary;
 
 import com.phasmidsoftware.args.Args;
 import edu.neu.coe.info6205.sort.*;
-import edu.neu.coe.info6205.util.Config;
-import edu.neu.coe.info6205.util.LazyLogger;
-import edu.neu.coe.info6205.util.Stopwatch;
+import edu.neu.coe.info6205.sort.linearithmic.MergeSort;
+import edu.neu.coe.info6205.util.*;
 import scala.collection.immutable.Seq;
 import scala.util.Try;
 
@@ -313,4 +312,28 @@ public class ShellSort<X extends Comparable<X>> extends SortWithHelper<X> {
     }
 
     final private static LazyLogger logger = new LazyLogger(ShellSort.class);
+    public static void main (String[] args) {
+        int N = 640000;
+
+        while(N<=1000000) {
+            InstrumentedHelper<Integer> instrumentedHelper = new InstrumentedHelper<>("ShellSort", Config.setupConfig("true", "0", "0", "", ""));
+            ShellSort<Integer> s = new ShellSort<>(5, instrumentedHelper);
+            int j = N;
+            s.init(j);
+            Integer[] xs = instrumentedHelper.random(Integer.class, r -> r.nextInt(j));
+            Benchmark<Boolean> benchmark = new Benchmark_Timer<>("Sorting", b -> s.sort(xs, 0, j));
+            double nTime = benchmark.run(true, 20);
+            long nCompares = instrumentedHelper.getCompares();
+            long nSwaps = instrumentedHelper.getSwaps();
+            long nHits = instrumentedHelper.getHits();
+
+            System.out.println("When array size is: " + j);
+            System.out.println("Compares: " + nCompares);
+            System.out.println("Swaps: " + nSwaps);
+            System.out.println("Hits: " + nHits);
+            System.out.println("Time: " + nTime);
+
+            N = N*2;
+        }
+    }
 }

@@ -134,7 +134,7 @@ public class QuickSort_DualPivot<X extends Comparable<X>> extends QuickSort<X> {
             double b3 = benchmark3.run(true, 20);
 
             long nCompares = instrumentedHelper.getCompares();
-            int nSwaps = instrumentedHelper.getSwaps();
+            long nSwaps = instrumentedHelper.getSwaps();
             long nHits = instrumentedHelper.getHits();
 
             double nTime = (b1 + b2 + b3);

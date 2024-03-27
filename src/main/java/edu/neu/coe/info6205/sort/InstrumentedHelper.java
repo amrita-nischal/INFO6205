@@ -421,7 +421,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
         return compares;
     }
 
-    public int getSwaps() {
+    public long getSwaps() {
         return swaps;
     }
 
@@ -505,7 +505,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
     private final boolean showStats;
     private StatPack statPack;
     private long compares = 0;
-    private int swaps = 0;
+    private long swaps = 0;
     private int copies = 0;
     private int fixes = 0;
     private long hits = 0;
